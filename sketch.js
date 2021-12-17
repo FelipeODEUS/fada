@@ -13,7 +13,8 @@ function preload(){
     starImg = loadImage("images/star.png");
 	bgImg = loadImage("images/starNight.png");
     //carregar animação de fada
-    imgFada = loadAnimation("images/fairyImage1.png, images/fairyImage2.png");
+    imgFada = loadAnimation("images/fairyImage1.png", "images/fairyImage2.png");
+    vozFada = loadSound("sound/JoyMusic.mp3");
     
 }
 
@@ -21,14 +22,14 @@ function setup() {
     createCanvas(800, 750);
 
     //escrever código para tocar o som vozFada
-    vozFada = loadSound("sound/JoyMusic.mp3");
+    vozFada.play();
     
     
 
     //criar sprite de fada e adicionar animação para fada
-    fada = createSprite(200,30);
-    fada.addImage(imgFada);
-    fada.scale = 0.5;
+    fada = createSprite(200,100);
+    fada.addAnimation("voando", imgFada);
+    fada.scale = 0.1;
     
     
     star = createSprite(650,30);
@@ -42,15 +43,32 @@ function setup() {
 	World.add(world, starBody);
 	
 	Engine.run(engine);
+}
 
+    function draw(){
+        background(bgImg);
+        
+        star.x= starBody.position.x 
+        star.y= starBody.position.y 
 
-    if(star.y > 470 && starBody.position.y > 470){
-        Matter.Body.setStatic(starBody, true);
+        if(star.y > 470 && starBody.position.y > 470){
+            Matter.Body.setStatic(starBody, true);
+        }
+
+        drawSprites();
     }
 
+    function keyPressed() {
 
-
-
-
-   
-}
+        if(keyCode === RIGHT_ARROW){
+               fada.x = fada.x + 20;
+        }
+        
+            if(keyCode === LEFT_ARROW){
+               fada.x = fada.x - 20;
+        }
+    
+        if (keyCode === DOWN_ARROW) {
+            Matter.Body.setStatic(starBody,false); 
+        }
+    }
